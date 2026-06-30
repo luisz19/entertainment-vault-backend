@@ -35,12 +35,17 @@ export class UserService {
     return await this.userRepository.save(createUserDto);
   }
 
-  public async update(user: User, updateUserDto: UpdateUserDto): Promise<User> {
+  public async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.findOneOrFail(id);
+
     Object.assign(user, updateUserDto);
+    console.log('Updated user:', user);
     return await this.userRepository.save(user);
   }
 
-  public async deleteUser(user: User): Promise<void> {
-    await this.userRepository.delete(user);
+  public async deleteUser(id: string): Promise<void> {
+    const user = await this.findOneOrFail(id);
+
+    await this.userRepository.delete(user.id);
   }
 }

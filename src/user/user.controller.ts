@@ -39,14 +39,12 @@ export class UserController {
     @Param() params: findOneParams,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User> {
-    const user = await this.userService.findOneOrFail(params.id);
-    return this.userService.update(user, updateUserDto);
+    return this.userService.update(params.id, updateUserDto);
   }
 
   @Delete('/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  public async delete(@Param() params: { id: string }): Promise<void> {
-    const user = await this.userService.findOneOrFail(params.id);
-    return this.userService.deleteUser(user);
+  public async delete(@Param() params: findOneParams): Promise<void> {
+    return this.userService.deleteUser(params.id);
   }
 }

@@ -21,7 +21,7 @@ Content-Type: {{contentType}}
 GET {{baseUrl}}/user
 
 ### Get user by id
-GET {{baseUrl}}/user/72cde7c3-e1cd-4693-947c-f06ded8bb3c
+GET {{baseUrl}}/user/c432b8e1-e6af-4ad4-8ec4-6b671ab6fd43
 
 ### POST task incorrect
 POST {{baseUrl}}/user/register
@@ -34,13 +34,12 @@ Content-Type: {{contentType}}
 }
 
 ### PATCH user by id
-PATCH {{baseUrl}}/user/72cde7c3-e1cd-4693-947c-f06ded8bb3cc
+PATCH {{baseUrl}}/user/180c5135-b640-4ff3-8e94-47549103672a
 Content-Type: {{contentType}}
 
 {
-    "name": "John Doe Updated",
-    "email": "updated@example.com"
+    "name": "John Doe Updated 9"
 }
 
 ### DELETE user by id
-DELETE {{baseUrl}}/user/72cde7c3-e1cd-4693-947c-f06ded8bb3cc
+DELETE {{baseUrl}}/user/c432b8e1-e6af-4ad4-8ec4-6b671ab6fd43
