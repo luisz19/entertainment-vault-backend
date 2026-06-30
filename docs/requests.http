@@ -1,0 +1,46 @@
+@baseUrl = http://localhost:3000
+
+@contentType = application/json
+
+GET {{baseUrl}}
+
+### Set the user id
+@userId = {{ create.response.body.id }}
+
+### Register a new user
+POST {{baseUrl}}/user/register
+Content-Type: {{contentType}}
+
+{
+    "name": "John Doe",
+    "email": "user@example.com",
+    "password": "password123"
+}
+
+### Get all users
+GET {{baseUrl}}/user
+
+### Get user by id
+GET {{baseUrl}}/user/72cde7c3-e1cd-4693-947c-f06ded8bb3c
+
+### POST task incorrect
+POST {{baseUrl}}/user/register
+Content-Type: {{contentType}}
+
+{
+    "name": "John Doe",
+    "email": 6,
+    "password": "password123"
+}
+
+### PATCH user by id
+PATCH {{baseUrl}}/user/72cde7c3-e1cd-4693-947c-f06ded8bb3cc
+Content-Type: {{contentType}}
+
+{
+    "name": "John Doe Updated",
+    "email": "updated@example.com"
+}
+
+### DELETE user by id
+DELETE {{baseUrl}}/user/72cde7c3-e1cd-4693-947c-f06ded8bb3cc
