@@ -1,5 +1,6 @@
+import { Media } from 'src/media/entities/media.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export class Category {
   @PrimaryGeneratedColumn('uuid')
@@ -10,6 +11,9 @@ export class Category {
 
   @ManyToOne(() => User, (user) => user.categories, { nullable: false })
   user: User;
+
+  @OneToMany(() => Media, (media) => media.category)
+  medias: Media[];
 
   @Column({
     type: 'varchar',
