@@ -1,7 +1,16 @@
 import { Media } from 'src/media/entities/media.entity';
 import { User } from 'src/user/entities/user.entity';
-import { Column, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
+@Entity()
 export class Category {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -29,15 +38,9 @@ export class Category {
   })
   icon: string;
 
-  @Column({
-    type: 'datetime',
-    nullable: false,
-  })
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column({
-    type: 'datetime',
-    nullable: false,
-  })
+  @UpdateDateColumn()
   updatedAt: Date;
 }

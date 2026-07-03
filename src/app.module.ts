@@ -9,7 +9,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { appConfig } from './config/app.config';
 import { typeOrmConfig } from './config/database.config';
 import { appConfigSchema } from './config/config.types';
-import { User } from './user/entities/user.entity';
 import { TypedConfigService } from './config/typed-config.service';
 
 @Module({
@@ -21,7 +20,7 @@ import { TypedConfigService } from './config/typed-config.service';
       useFactory: (configService: TypedConfigService) => ({
         //cria a configuração do TypeORM usando o ConfigService para acessar as variáveis de ambiente
         ...configService.get('database'),
-        entities: [User],
+        autoLoadEntities: true, //carrega automaticamente todas as entidades do projeto
       }),
     }),
     ConfigModule.forRoot({

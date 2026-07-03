@@ -1,8 +1,9 @@
-import { Column, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { MediaStatus } from '../model/media.model';
 import { User } from 'src/user/entities/user.entity';
 import { Category } from 'src/category/entities/category.entity';
 
+@Entity()
 export class Media {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -10,11 +11,11 @@ export class Media {
   @Column()
   userId: string;
 
-  @Column()
-  categoryId: string;
-
   @ManyToOne(() => User, (user) => user.medias, { nullable: false })
   user: User;
+
+  @Column()
+  categoryId: string;
 
   @ManyToOne(() => Category, (category) => category.medias, { nullable: false })
   category: Category;
@@ -60,27 +61,15 @@ export class Media {
   })
   genre: string;
 
-  @Column({
-    type: 'datetime',
-    nullable: false,
-  })
+  @Column()
   createdAt: Date;
 
-  @Column({
-    type: 'datetime',
-    nullable: false,
-  })
+  @Column()
   updatedAt: Date;
 
-  @Column({
-    type: 'datetime',
-    nullable: true,
-  })
+  @Column()
   initiatedAt: Date;
 
-  @Column({
-    type: 'datetime',
-    nullable: true,
-  })
+  @Column()
   completedAt: Date;
 }

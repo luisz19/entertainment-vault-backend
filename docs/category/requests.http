@@ -1,0 +1,30 @@
+@baseUrl = http://localhost:3000
+
+@contentType = application/json
+
+GET {{baseUrl}}
+
+### Set the user id
+# @userId = {{ create.response.body.id }}
+
+@userId = "c432b8e1-e6af-4ad4-8ec4-6b671ab6fd43"
+
+@categoryId = a073f756-f958-4fab-a084-e319a206df51
+
+### Register a new user
+POST {{baseUrl}}/categories/create
+Content-Type: {{contentType}}
+
+{
+    "userId": {{userId}},
+    "name": "Books"
+}
+
+### Get all users
+GET {{baseUrl}}/categories
+
+### Get user by id
+GET {{baseUrl}}/categories/{{categoryId}}
+
+### Delete Category by id
+DELETE {{baseUrl}}/categories/{{categoryId}}
