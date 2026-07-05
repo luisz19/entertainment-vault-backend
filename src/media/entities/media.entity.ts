@@ -1,4 +1,11 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { MediaStatus } from '../model/media.model';
 import { User } from 'src/user/entities/user.entity';
 import { Category } from 'src/category/entities/category.entity';
@@ -61,15 +68,21 @@ export class Media {
   })
   genre: string;
 
-  @Column()
+  @CreateDateColumn()
   createdAt: Date;
 
-  @Column()
+  @UpdateDateColumn()
   updatedAt: Date;
 
-  @Column()
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+  })
   initiatedAt: Date;
 
-  @Column()
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+  })
   completedAt: Date;
 }
