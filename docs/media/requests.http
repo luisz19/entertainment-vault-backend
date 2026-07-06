@@ -1,0 +1,46 @@
+@baseUrl = http://localhost:3000
+
+@contentType = application/json
+
+GET {{baseUrl}}
+
+### Set the user id
+# @userId = {{ create.response.body.id }}
+
+@userId = "7483815f-1771-4938-89a1-ba83608715e7"
+
+@mediaId = 7483815f-1771-4938-89a1-ba83608715e7
+
+### Create a new Media
+POST {{baseUrl}}/media/create
+Content-Type: {{contentType}}
+
+{
+    "userId": {{userId}},
+    "categoryId": "77933165-6816-4a1f-bc50-d6ef9b286960",
+    "title": "The Great Gatsby",
+    "comment": "A classic novel by F. Scott Fitzgerald.",
+    "availableIn": "Netlix",
+    "genre": "Fiction"
+
+}
+
+### Update Media by id
+PATCH {{baseUrl}}/media/{{mediaId}}
+Content-Type: {{contentType}}
+
+{
+    "title": "The Great Gatsby - Updated",
+    "comment": "An updated comment for the classic novel.",
+    "availableIn": "Amazon Prime",
+    "genre": "Classic Fiction"
+}
+
+### Get all users
+GET {{baseUrl}}/media
+
+### Get user by id
+GET {{baseUrl}}/media/{{mediaId}}
+
+### Delete Media by id
+DELETE {{baseUrl}}/media/{{mediaId}}

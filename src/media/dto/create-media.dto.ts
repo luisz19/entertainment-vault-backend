@@ -1,10 +1,14 @@
 import {
   IsDate,
+  IsEmpty,
+  IsEnum,
   IsNotEmpty,
+  IsNumber,
   IsOptional,
   IsString,
   IsUUID,
 } from 'class-validator';
+import { MediaStatus } from '../model/media.model';
 
 export class CreateMediaDto {
   @IsNotEmpty()
@@ -23,6 +27,10 @@ export class CreateMediaDto {
   @IsUUID()
   categoryId: string;
 
+  @IsNumber()
+  @IsOptional()
+  progress: number;
+
   @IsString()
   @IsOptional()
   availableIn: string;
@@ -30,6 +38,10 @@ export class CreateMediaDto {
   @IsString()
   @IsOptional()
   genre: string;
+
+  @IsOptional()
+  @IsEnum(MediaStatus)
+  status: MediaStatus;
 
   @IsOptional()
   @IsDate()

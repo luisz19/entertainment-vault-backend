@@ -48,9 +48,8 @@ export class Media {
   status: MediaStatus;
 
   @Column({
-    type: 'float',
     default: 0,
-    nullable: false,
+    nullable: true,
   })
   progress: number;
 
