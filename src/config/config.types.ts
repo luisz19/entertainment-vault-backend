@@ -5,6 +5,7 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 export interface ConfigType {
   app: AppConfig;
   database: TypeOrmModuleOptions; // esse é o tipo do TypeOrmModuleOptions, que foi usado para configurar o TypeORM no arquivo database.config.ts
+  auth: AppConfig;
 }
 
 export const appConfigSchema = Joi.object({
@@ -14,4 +15,6 @@ export const appConfigSchema = Joi.object({
   DB_PASSWORD: Joi.string().required(),
   DB_DATABASE: Joi.string().required(),
   DB_SYNC: Joi.number().valid(1, 2).required(),
+  JWT_SECRET: Joi.string().required(),
+  JWT_EXPIRES_IN: Joi.string().required(),
 });

@@ -10,6 +10,7 @@ import { appConfig } from './config/app.config';
 import { typeOrmConfig } from './config/database.config';
 import { appConfigSchema } from './config/config.types';
 import { TypedConfigService } from './config/typed-config.service';
+import { authConfig } from './config/auth.config';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { TypedConfigService } from './config/typed-config.service';
       }),
     }),
     ConfigModule.forRoot({
-      load: [appConfig, typeOrmConfig],
+      load: [appConfig, typeOrmConfig, authConfig],
       validationSchema: appConfigSchema,
       validationOptions: {
         abortEarly: true,
