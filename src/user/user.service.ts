@@ -4,12 +4,14 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { PasswordService } from './password/password.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    private readonly passwordService: PasswordService,
   ) {}
 
   public async findAll(): Promise<User[]> {
@@ -31,8 +33,20 @@ export class UserService {
     return user;
   }
 
+  public async findOneByEmail(email: string): Promise<User | null> {
+    const user = await this.userRepository.findOneBy({ email });
+    return user;
+  }
+
   public async createUser(createUserDto: CreateUserDto): Promise<User> {
-    return await this.userRepository.save(createUserDto);
+    const hashedPassword = await this.passwordService.hash(
+      createUserDto.password,
+    );
+
+    return await this.userRepository.save({
+      ...createUserDto,
+      password: hashedPassword,
+    });
   }
 
   public async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
