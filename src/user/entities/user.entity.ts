@@ -1,3 +1,4 @@
+import { Exclude, Expose } from 'class-transformer';
 import { Category } from 'src/category/entities/category.entity';
 import { Media } from 'src/media/entities/media.entity';
 import {
@@ -11,8 +12,10 @@ import {
 import { Entity } from 'typeorm';
 
 @Entity()
+@Exclude()
 export class User {
   @PrimaryGeneratedColumn('uuid')
+  @Expose()
   id: string;
 
   @OneToMany(() => Media, (media) => media.user)
@@ -22,17 +25,21 @@ export class User {
   categories: Category[];
 
   @Column()
+  @Expose()
   name: string;
 
   @Column()
+  @Expose()
   email: string;
 
   @Column()
   password: string;
 
   @CreateDateColumn()
+  @Expose()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @Expose()
   updatedAt: Date;
 }
