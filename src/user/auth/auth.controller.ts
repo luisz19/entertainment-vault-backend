@@ -7,6 +7,7 @@ import {
   Post,
   SerializeOptions,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../dto/create-user.dto';
@@ -15,6 +16,7 @@ import { LoginDto } from '../dto/login.dto';
 import { LoginResponse } from '../login.response';
 import type { AuthRequest } from '../auth.request';
 import { UserService } from '../user.service';
+import { AuthGuard } from '../auth.guard';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -43,6 +45,7 @@ export class AuthController {
   }
 
   @Get('profile')
+  @UseGuards(AuthGuard)
   async profile(@Request() request: AuthRequest): Promise<User> {
     // This endpoint requires authentication, so the user information will be available in the request object
     const user = await this.userService.findOne(request.user.sub);
