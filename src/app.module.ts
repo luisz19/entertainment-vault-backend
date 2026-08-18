@@ -25,6 +25,7 @@ import { authConfig } from './config/auth.config';
       }),
     }),
     ConfigModule.forRoot({
+      isGlobal: true, // torna o ConfigModule global, permitindo que seja usado em qualquer módulo sem precisar importá-lo novamente
       load: [appConfig, typeOrmConfig, authConfig],
       validationSchema: appConfigSchema,
       validationOptions: {

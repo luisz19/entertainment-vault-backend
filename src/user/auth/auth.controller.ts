@@ -2,6 +2,8 @@ import {
   Body,
   ClassSerializerInterceptor,
   Controller,
+  Get,
+  Request,
   Post,
   SerializeOptions,
   UseInterceptors,
@@ -11,6 +13,8 @@ import { CreateUserDto } from '../dto/create-user.dto';
 import { User } from '../entities/user.entity';
 import { LoginDto } from '../dto/login.dto';
 import { LoginResponse } from '../login.response';
+import type { AuthRequest } from '../auth.request';
+import { UserService } from '../user.service';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -18,7 +22,10 @@ import { LoginResponse } from '../login.response';
   strategy: 'excludeAll',
 })
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
   @Post('register')
   async register(@Body() createUserDto: CreateUserDto): Promise<User> {
@@ -33,5 +40,13 @@ export class AuthController {
       loginDto.password,
     );
     return new LoginResponse({ accessToken });
+  }
+
+  @Get('profile')
+  async profile(@Request() request: AuthRequest): Promise<User> {
+    // This endpoint requires authentication, so the user information will be available in the request object
+    const user = await this.userService.findOne(request.user.sub);
+
+    return user;
   }
 }
