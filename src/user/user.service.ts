@@ -14,10 +14,6 @@ export class UserService {
     private readonly passwordService: PasswordService,
   ) {}
 
-  public async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
-  }
-
   private async findOneOrFail(id: string): Promise<User> {
     const user = await this.userRepository.findOneBy({ id });
 
@@ -25,11 +21,6 @@ export class UserService {
       throw new NotFoundException();
     }
 
-    return user;
-  }
-
-  public async findOne(id: string): Promise<User> {
-    const user = await this.findOneOrFail(id);
     return user;
   }
 

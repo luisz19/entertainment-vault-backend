@@ -2,44 +2,28 @@
 
 @contentType = application/json
 
-GET {{baseUrl}}
+@accessToken = {{login.response.body.$.accessToken}}
 
-### Set the user id
-@userId = {{ create.response.body.id }}
-
-### Register a new user
-POST {{baseUrl}}/user/register
+### POST register new user
+POST {{baseUrl}}/auth/register
 Content-Type: {{contentType}}
 
 {
     "name": "John Doe",
-    "email": "user@example.com",
-    "password": "password123"
+    "email": "john123123@example.com",
+    "password": "Password123!"
 }
 
-### Get all users
-GET {{baseUrl}}/user
-
-### Get user by id
-GET {{baseUrl}}/user/c432b8e1-e6af-4ad4-8ec4-6b671ab6fd43
-
-### POST task incorrect
-POST {{baseUrl}}/user/register
+### POST Login
+# @name login
+POST {{baseUrl}}/auth/login
 Content-Type: {{contentType}}
 
 {
-    "name": "John Doe",
-    "email": 6,
-    "password": "password123"
+    "email": "john@example.com",
+    "password": "Password123!"
 }
 
-### PATCH user by id
-PATCH {{baseUrl}}/user/180c5135-b640-4ff3-8e94-47549103672a
-Content-Type: {{contentType}}
-
-{
-    "name": "John Doe Updated 9"
-}
-
-### DELETE user by id
-DELETE {{baseUrl}}/user/c432b8e1-e6af-4ad4-8ec4-6b671ab6fd43
+### Get user profile
+GET {{baseUrl}}/auth/profile
+Authorization: Bearer {{accessToken}}
