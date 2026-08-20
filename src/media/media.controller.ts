@@ -14,6 +14,7 @@ import { findOneParams } from 'src/find-one.params';
 import { Media } from './entities/media.entity';
 import { CreateMediaDto } from './dto/create-media.dto';
 import { UpdateMediaDto } from './dto/update-media.dto';
+import { CurrentUserId } from 'src/user/decorators/current-user-id.decorator';
 
 @Controller('media')
 export class MediaController {
@@ -32,8 +33,12 @@ export class MediaController {
   @Post('/create')
   public async createMedia(
     @Body() createMediaDto: CreateMediaDto,
+    @CurrentUserId() userId: string,
   ): Promise<Media> {
-    return this.mediaService.createMedia(createMediaDto);
+    return this.mediaService.createMedia({
+      ...createMediaDto,
+      userId,
+    });
   }
 
   @Patch('/:id')

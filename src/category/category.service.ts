@@ -12,8 +12,10 @@ export class CategoryService {
     private readonly categoryRepository: Repository<Category>,
   ) {}
 
-  async findAll(): Promise<Category[]> {
-    return this.categoryRepository.find();
+  async findAll(userId: string): Promise<Category[]> {
+    const query = this.categoryRepository.createQueryBuilder('category');
+    query.where('category.userId = :userId', { userId });
+    return query.getMany();
   }
 
   async findOneOrFail(id: string): Promise<Category> {

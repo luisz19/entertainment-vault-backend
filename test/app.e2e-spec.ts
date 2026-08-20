@@ -11,9 +11,6 @@ describe('AppController (e2e)', () => {
 
   afterEach(async () => {
     await testSetup.cleanup();
-  });
-
-  afterAll(async () => {
     await testSetup.teardown();
   });
 

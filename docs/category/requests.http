@@ -2,29 +2,37 @@
 
 @contentType = application/json
 
-GET {{baseUrl}}
+@accessToken = {{login.response.body.$.accessToken}}
 
-### Set the user id
-# @userId = {{ create.response.body.id }}
-
-@userId = "c432b8e1-e6af-4ad4-8ec4-6b671ab6fd43"
-
-@categoryId = a073f756-f958-4fab-a084-e319a206df51
-
-### Register a new user
-POST {{baseUrl}}/categories/create
+### Login
+# @name login
+POST {{baseUrl}}/auth/login
 Content-Type: {{contentType}}
 
 {
-    "userId": {{userId}},
-    "name": "Books"
+    "email": "john123123@example.com",
+    "password": "Password123!"
 }
 
-### Get all users
-GET {{baseUrl}}/categories
+### Create category
+POST {{baseUrl}}/categories
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
 
-### Get user by id
+{
+    "name": "Books",
+    "icon": "book"
+    
+}
+
+### Get all categories
+GET {{baseUrl}}/categories
+Authorization: Bearer {{accessToken}}
+
+### Get category by id
 GET {{baseUrl}}/categories/{{categoryId}}
+Authorization: Bearer {{accessToken}}
 
 ### Delete Category by id
 DELETE {{baseUrl}}/categories/{{categoryId}}
+Authorization: Bearer {{accessToken}}

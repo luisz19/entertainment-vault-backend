@@ -7,7 +7,7 @@ GET {{baseUrl}}
 ### Set the user id
 # @userId = {{ create.response.body.id }}
 
-@userId = "7483815f-1771-4938-89a1-ba83608715e7"
+@userId = "e2196739-c662-4ca0-a49b-d9a0e55add3e"
 
 @mediaId = 7483815f-1771-4938-89a1-ba83608715e7
 

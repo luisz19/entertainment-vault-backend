@@ -8,34 +8,35 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { CategoryService } from './category.service';
 import { Category } from './entities/category.entity';
 import { findOneParams } from 'src/find-one.params';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category';
+import { CurrentUserId } from 'src/user/decorators/current-user-id.decorator';
+import { AuthGuard } from 'src/user/auth.guard';
 
 @Controller('categories')
+@UseGuards(AuthGuard)
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
-  @Get('/')
-  public async findAll(): Promise<Category[]> {
-    return this.categoryService.findAll();
+  @Get()
+  public async findAll(@CurrentUserId() userId: string): Promise<Category[]> {
+    return this.categoryService.findAll(userId);
   }
 
-  @Get('/:id')
-  public async findOne(
-    @Param() params: findOneParams,
-  ): Promise<Category | null> {
-    return this.categoryService.findOne(params.id);
-  }
-
-  @Post('/create')
+  @Post()
   public async createCategory(
     @Body() createCategoryDto: CreateCategoryDto,
+    @CurrentUserId() userId: string,
   ): Promise<Category> {
-    return this.categoryService.createCategory(createCategoryDto);
+    return this.categoryService.createCategory({
+      ...createCategoryDto,
+      userId,
+    });
   }
 
   @Patch('/:id')

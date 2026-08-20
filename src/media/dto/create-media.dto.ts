@@ -12,10 +12,6 @@ import { MediaStatus } from '../model/media.model';
 
 export class CreateMediaDto {
   @IsNotEmpty()
-  @IsUUID()
-  userId: string;
-
-  @IsNotEmpty()
   @IsString()
   title: string;
 
@@ -50,4 +46,6 @@ export class CreateMediaDto {
   @IsOptional()
   @IsDate()
   initiatedAt: Date;
+
+  userId: string;
 }
