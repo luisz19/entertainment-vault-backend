@@ -11,6 +11,7 @@ import { typeOrmConfig } from './config/database.config';
 import { appConfigSchema } from './config/config.types';
 import { TypedConfigService } from './config/typed-config.service';
 import { authConfig } from './config/auth.config';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { authConfig } from './config/auth.config';
     UserModule,
     MediaModule,
     CategoryModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [

@@ -16,7 +16,7 @@ import { findOneParams } from 'src/find-one.params';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category';
 import { CurrentUserId } from 'src/user/decorators/current-user-id.decorator';
-import { AuthGuard } from 'src/user/auth.guard';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('categories')
 @UseGuards(AuthGuard)

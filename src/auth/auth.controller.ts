@@ -10,13 +10,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto } from '../dto/create-user.dto';
-import { User } from '../entities/user.entity';
-import { LoginDto } from '../dto/login.dto';
-import { LoginResponse } from '../login.response';
-import type { AuthRequest } from '../auth.request';
-import { UserService } from '../user.service';
-import { AuthGuard } from '../auth.guard';
+import { CreateUserDto } from '../user/dto/create-user.dto';
+import { User } from '../user/entities/user.entity';
+import { LoginDto } from './dto/login.dto';
+import { LoginResponse } from './login.response';
+import type { AuthRequest } from './auth.request';
+import { UserService } from '../user/user.service';
+import { AuthGuard } from './guards/auth.guard';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
