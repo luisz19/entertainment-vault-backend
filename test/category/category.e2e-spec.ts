@@ -57,6 +57,15 @@ describe('Category (e2e)', () => {
     expect(Array.isArray(response.body)).toBe(true);
   });
 
+  it('/categories/:id (GET)', async () => {
+    const response = await request(testSetup.app.getHttpServer())
+      .get(`/categories/${categoryId}`)
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(200);
+
+    expect(response.body).toHaveProperty('id', categoryId);
+  });
+
   it('/categories (POST)', async () => {
     const response = await request(testSetup.app.getHttpServer())
       .post('/categories')
@@ -70,5 +79,38 @@ describe('Category (e2e)', () => {
     expect(response.body).toHaveProperty('id');
     expect(response.body.name).toBe('New Category');
     expect(response.body.icon).toBe('new-icon');
+  });
+
+  it('/categories/:id (POST) duplicate', async () => {
+    return await request(testSetup.app.getHttpServer())
+      .post('/categories')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        name: 'Test Category',
+        icon: 'test-icon',
+      })
+      .expect(409);
+  });
+
+  it('/categories/:id (PATCH)', async () => {
+    const response = await request(testSetup.app.getHttpServer())
+      .patch(`/categories/${categoryId}`)
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        name: 'Updated Category',
+        icon: 'updated-icon',
+      })
+      .expect(200);
+
+    expect(response.body).toHaveProperty('id', categoryId);
+    expect(response.body.name).toBe('Updated Category');
+    expect(response.body.icon).toBe('updated-icon');
+  });
+
+  it('/categories/:id (DELETE)', async () => {
+    await request(testSetup.app.getHttpServer())
+      .delete(`/categories/${categoryId}`)
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(204);
   });
 });

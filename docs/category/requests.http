@@ -4,6 +4,8 @@
 
 @accessToken = {{login.response.body.$.accessToken}}
 
+@categoryId = {{createCategory.response.body.$.id}}
+
 ### Login
 # @name login
 POST {{baseUrl}}/auth/login
@@ -15,12 +17,13 @@ Content-Type: {{contentType}}
 }
 
 ### Create category
+# @name createCategory
 POST {{baseUrl}}/categories
 Content-Type: {{contentType}}
 Authorization: Bearer {{accessToken}}
 
 {
-    "name": "Books",
+    "name": "Teste",
     "icon": "book"
     
 }

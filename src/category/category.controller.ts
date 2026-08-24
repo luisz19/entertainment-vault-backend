@@ -28,6 +28,11 @@ export class CategoryController {
     return this.categoryService.findAll(userId);
   }
 
+  @Get('/:id')
+  public async findOne(@Param() params: findOneParams): Promise<Category> {
+    return this.categoryService.findOneOrFail(params.id);
+  }
+
   @Post()
   public async createCategory(
     @Body() createCategoryDto: CreateCategoryDto,
