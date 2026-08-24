@@ -1,60 +1,130 @@
-// import request from 'supertest';
-// import { AppModule } from '../../src/app.module';
-// import { TestSetup } from '../utils/test-setup';
+import request from 'supertest';
+import { AppModule } from '../../src/app.module';
+import { TestSetup } from '../utils/test-setup';
 
-// describe('Media (e2e)', () => {
-//   let testSetup: TestSetup;
-//   let authToken: string;
-//   let mediaId: string;
+describe('Media (e2e)', () => {
+  let testSetup: TestSetup;
+  let authToken: string;
+  let categoryId: string;
+  let mediaId: string;
 
-//   const testUser = {
-//     email: 'tes2@example.com',
-//     password: 'Password123!',
-//     name: 'Test User',
-//   };
+  const testUser = {
+    email: 'tes2@example.com',
+    password: 'Password123!',
+    name: 'Test User',
+  };
 
-//   beforeEach(async () => {
-//     testSetup = await TestSetup.create(AppModule);
+  const testMedia = {
+    title: 'Test Medie',
+    comment: 'This is a test media item.',
+    progress: 50,
+    availableIn: 'Netflix',
+    genre: 'Action',
+    status: 'PENDING',
+  };
 
-//     await request(testSetup.app.getHttpServer())
-//       .post('/auth/register')
-//       .send(testUser)
-//       .expect(201);
+  beforeEach(async () => {
+    testSetup = await TestSetup.create(AppModule);
 
-//     const loginResponse = await request(testSetup.app.getHttpServer())
-//       .post('/auth/login')
-//       .send(testUser)
-//       .expect(201);
+    await request(testSetup.app.getHttpServer())
+      .post('/auth/register')
+      .send(testUser)
+      .expect(201);
 
-//     authToken = loginResponse.body.accessToken;
+    const loginResponse = await request(testSetup.app.getHttpServer())
+      .post('/auth/login')
+      .send(testUser)
+      .expect(201);
 
-//     const response = await request(testSetup.app.getHttpServer())
-//       .post('/media/create')
-//       .set('Authorization', `Bearer ${authToken}`)
-//       .send({
-//         userId: loginResponse.accessToken,
-//         title: 'Test Media',
-//         comment: 'This is a test media item.',
-//         url: 'http://example.com/media/test-media',
-//       });
-//     mediaId = response.body.id;
-//   });
+    const categoryResponse = await request(testSetup.app.getHttpServer())
+      .post('/categories')
+      .set('Authorization', `Bearer ${loginResponse.body.accessToken}`)
+      .send({
+        name: 'Test Category',
+        icon: 'test-icon',
+      })
+      .expect(201);
 
-//   afterEach(async () => {
-//     await testSetup.cleanup();
-//   });
+    authToken = loginResponse.body.accessToken;
+    categoryId = categoryResponse.body.id;
 
-//   afterAll(async () => {
-//     await testSetup.teardown();
-//   });
+    const response = await request(testSetup.app.getHttpServer())
+      .post('/media')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        ...testMedia,
+        categoryId: categoryId,
+      })
+      .expect(201);
+    mediaId = response.body.id;
 
-//   it('/media (GET)', async () => {
-//     const response = await request(testSetup.app.getHttpServer())
-//       .get('/media')
-//       .set('Authorization', `Bearer ${authToken}`)
-//       .expect(200);
+    expect(response.body).toHaveProperty('id');
+    expect(response.body.title).toBe(testMedia.title);
+    expect(response.body.categoryId).toBe(categoryId);
+    expect(response.body.comment).toBe(testMedia.comment);
+  });
 
-//     expect(Array.isArray(response.body)).toBe(true);
-//     expect(response.body.length).toBeGreaterThan(0);
-//   });
-// });
+  afterEach(async () => {
+    await testSetup.cleanup();
+    await testSetup.teardown();
+  });
+
+  it('/media (GET)', async () => {
+    const response = await request(testSetup.app.getHttpServer())
+      .get('/media')
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(200);
+
+    expect(Array.isArray(response.body)).toBe(true);
+  });
+
+  it('/media/:id (GET)', async () => {
+    const response = await request(testSetup.app.getHttpServer())
+      .get(`/media/${mediaId}`)
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(200);
+
+    expect(response.body).toHaveProperty('id', mediaId);
+  });
+
+  it('/media (POST) duplicate', async () => {
+    return await request(testSetup.app.getHttpServer())
+      .post('/media')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        ...testMedia,
+        categoryId: categoryId,
+      })
+      .expect(409);
+  });
+
+  it('/media/:id (PATCH)', async () => {
+    const updatedTitle = 'Updated Test Media';
+    const response = await request(testSetup.app.getHttpServer())
+      .patch(`/media/${mediaId}`)
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        title: updatedTitle,
+        comment: 'Updated comment',
+        progress: 75,
+        availableIn: 'HBO Max',
+        genre: 'Drama',
+        status: 'IN_PROGRESS',
+        completedAt: new Date().toISOString(),
+        initiatedAt: new Date().toISOString(),
+      })
+      .expect(200);
+
+    expect(response.body).toHaveProperty('id', mediaId);
+    expect(response.body.title).toBe(updatedTitle);
+    expect(response.body.comment).toBe('Updated comment');
+    expect(response.body.status).toBe('IN_PROGRESS');
+  });
+
+  it('/media/:id (DELETE)', async () => {
+    await request(testSetup.app.getHttpServer())
+      .delete(`/media/${mediaId}`)
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(204);
+  });
+});

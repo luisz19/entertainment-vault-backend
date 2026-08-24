@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
 import { MediaService } from './media.service';
 import { findOneParams } from 'src/find-one.params';
@@ -15,14 +16,16 @@ import { Media } from './entities/media.entity';
 import { CreateMediaDto } from './dto/create-media.dto';
 import { UpdateMediaDto } from './dto/update-media.dto';
 import { CurrentUserId } from 'src/user/decorators/current-user-id.decorator';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
 
 @Controller('media')
+@UseGuards(AuthGuard)
 export class MediaController {
   constructor(private readonly mediaService: MediaService) {}
 
-  @Get('/')
-  public async findAll() {
-    return this.mediaService.findAll();
+  @Get()
+  public async findAll(@CurrentUserId() userId: string): Promise<Media[]> {
+    return this.mediaService.findAll(userId);
   }
 
   @Get('/:id')
@@ -30,7 +33,7 @@ export class MediaController {
     return this.mediaService.findOne(params.id);
   }
 
-  @Post('/create')
+  @Post()
   public async createMedia(
     @Body() createMediaDto: CreateMediaDto,
     @CurrentUserId() userId: string,
@@ -45,8 +48,12 @@ export class MediaController {
   public async updateMedia(
     @Param() params: findOneParams,
     @Body() updateMediaDto: UpdateMediaDto,
+    @CurrentUserId() userId: string,
   ): Promise<Media> {
-    return this.mediaService.updateMedia(params.id, updateMediaDto);
+    return this.mediaService.updateMedia(params.id, {
+      ...updateMediaDto,
+      userId,
+    });
   }
 
   @Delete('/:id')

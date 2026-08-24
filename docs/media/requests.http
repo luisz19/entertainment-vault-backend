@@ -2,45 +2,71 @@
 
 @contentType = application/json
 
-GET {{baseUrl}}
+@accessToken = {{login.response.body.$.accessToken}}
 
-### Set the user id
-# @userId = {{ create.response.body.id }}
+# @categoryId = {{createCategory.response.body.$.id}}
 
-@userId = "e2196739-c662-4ca0-a49b-d9a0e55add3e"
+@categoryId = 5f9e3089-a45a-4857-a9c4-463427a0a464
 
-@mediaId = 7483815f-1771-4938-89a1-ba83608715e7
+@mediaId = {{createMedia.response.body.$.id}}
 
-### Create a new Media
-POST {{baseUrl}}/media/create
+### Login
+# @name login
+POST {{baseUrl}}/auth/login
 Content-Type: {{contentType}}
 
 {
-    "userId": {{userId}},
-    "categoryId": "77933165-6816-4a1f-bc50-d6ef9b286960",
-    "title": "The Great Gatsby",
-    "comment": "A classic novel by F. Scott Fitzgerald.",
-    "availableIn": "Netlix",
-    "genre": "Fiction"
+    "email": "john123123@example.com",
+    "password": "Password123!"
+}
 
+### Create category
+# @name createCategory
+POST {{baseUrl}}/categories
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+    "name": "New categoria",
+    "icon": "book"   
+}
+
+### Create a new Media
+# @name createMedia
+POST {{baseUrl}}/media
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+    "title": "Test Media 3",
+    "comment": "This is a test media item.",
+    "progress": 50,
+    "availableIn": "Netlix",
+    "genre": "Fiction",
+    "categoryId": "{{categoryId}}"
 }
 
 ### Update Media by id
 PATCH {{baseUrl}}/media/{{mediaId}}
 Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
 
 {
-    "title": "The Great Gatsby - Updated",
+    "title": "Teste - Updated",
     "comment": "An updated comment for the classic novel.",
     "availableIn": "Amazon Prime",
-    "genre": "Classic Fiction"
+    "genre": "Classic Fiction",
+    "categoryId": "{{categoryId}}"
 }
 
 ### Get all users
 GET {{baseUrl}}/media
+Authorization: Bearer {{accessToken}}
 
 ### Get user by id
 GET {{baseUrl}}/media/{{mediaId}}
+Authorization: Bearer {{accessToken}}
 
 ### Delete Media by id
 DELETE {{baseUrl}}/media/{{mediaId}}
+Authorization: Bearer {{accessToken}}
