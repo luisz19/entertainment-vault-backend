@@ -23,7 +23,7 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{accessToken}}
 
 {
-    "name": "Teste",
+    "name": "Testee",
     "icon": "book"
     
 }
@@ -35,6 +35,16 @@ Authorization: Bearer {{accessToken}}
 ### Get category by id
 GET {{baseUrl}}/categories/{{categoryId}}
 Authorization: Bearer {{accessToken}}
+
+### Update Category by id
+PATCH {{baseUrl}}/categories/{{categoryId}}
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+    "name": "Updated Category Name",
+    "icon": "updated-icon"
+}
 
 ### Delete Category by id
 DELETE {{baseUrl}}/categories/{{categoryId}}

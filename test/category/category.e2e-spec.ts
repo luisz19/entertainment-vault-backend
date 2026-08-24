@@ -36,10 +36,15 @@ describe('Category (e2e)', () => {
       .post('/categories')
       .set('Authorization', `Bearer ${authToken}`)
       .send({
-        name: 'Test Category',
-        icon: 'test-icon',
+        name: 'New Category',
+        icon: 'new-icon',
       })
       .expect(201);
+
+    expect(response.body).toHaveProperty('id');
+    expect(response.body.name).toBe('New Category');
+    expect(response.body.icon).toBe('new-icon');
+
     categoryId = response.body.id;
   });
 
@@ -66,28 +71,13 @@ describe('Category (e2e)', () => {
     expect(response.body).toHaveProperty('id', categoryId);
   });
 
-  it('/categories (POST)', async () => {
-    const response = await request(testSetup.app.getHttpServer())
+  it('/categories (POST) duplicate', async () => {
+    return await request(testSetup.app.getHttpServer())
       .post('/categories')
       .set('Authorization', `Bearer ${authToken}`)
       .send({
         name: 'New Category',
         icon: 'new-icon',
-      })
-      .expect(201);
-
-    expect(response.body).toHaveProperty('id');
-    expect(response.body.name).toBe('New Category');
-    expect(response.body.icon).toBe('new-icon');
-  });
-
-  it('/categories/:id (POST) duplicate', async () => {
-    return await request(testSetup.app.getHttpServer())
-      .post('/categories')
-      .set('Authorization', `Bearer ${authToken}`)
-      .send({
-        name: 'Test Category',
-        icon: 'test-icon',
       })
       .expect(409);
   });
