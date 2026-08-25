@@ -33,6 +33,13 @@ export class MediaController {
     return this.mediaService.findOne(params.id);
   }
 
+  @Get('/category/:categoryId')
+  public async findByCategory(
+    @Param('categoryId') categoryId: string,
+  ): Promise<Media[]> {
+    return this.mediaService.findByCategory(categoryId);
+  }
+
   @Post()
   public async createMedia(
     @Body() createMediaDto: CreateMediaDto,

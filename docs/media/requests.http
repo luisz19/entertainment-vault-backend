@@ -27,7 +27,7 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{accessToken}}
 
 {
-    "name": "New categoria",
+    "name": "New categoria4",
     "icon": "book"   
 }
 
@@ -65,6 +65,14 @@ Authorization: Bearer {{accessToken}}
 
 ### Get user by id
 GET {{baseUrl}}/media/{{mediaId}}
+Authorization: Bearer {{accessToken}}
+
+### Get media by category
+GET {{baseUrl}}/media/category/d54313aa-0668-4288-b070-2634b7cf8d0a
+Authorization: Bearer {{accessToken}}
+
+### Get media by category
+GET {{baseUrl}}/media/category/{{categoryId}}
 Authorization: Bearer {{accessToken}}
 
 ### Delete Media by id

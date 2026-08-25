@@ -78,6 +78,29 @@ describe('Media (e2e)', () => {
     expect(Array.isArray(response.body)).toBe(true);
   });
 
+  it('/media/category/:categoryId (GET)', async () => {
+    const response = await request(testSetup.app.getHttpServer())
+      .get(`/media/category/${categoryId}`)
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(200);
+
+    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.length).toBeGreaterThan(0);
+    expect(response.body[0]).toHaveProperty('categoryId', categoryId);
+  });
+
+  it('/media/category/:categoryId (GET) - No media found', async () => {
+    const response = await request(testSetup.app.getHttpServer())
+      .get('/media/category/d54313aa-0668-4288-b070-2634b7cf8d0a')
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(404);
+
+    expect(response.body).toHaveProperty(
+      'message',
+      'No media found for the specified category.',
+    );
+  });
+
   it('/media/:id (GET)', async () => {
     const response = await request(testSetup.app.getHttpServer())
       .get(`/media/${mediaId}`)

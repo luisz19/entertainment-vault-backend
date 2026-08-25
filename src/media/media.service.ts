@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Media } from './entities/media.entity';
@@ -31,6 +35,19 @@ export class MediaService {
   public async findOne(id: string): Promise<Media> {
     const media = await this.findOneOrFail(id);
     return media;
+  }
+
+  public async findByCategory(categoryId: string): Promise<Media[]> {
+    const query = this.mediaRepository.createQueryBuilder('media');
+    const existingCategory = await query
+      .where('media.categoryId = :categoryId', { categoryId })
+      .getMany();
+
+    if (!existingCategory || existingCategory.length === 0) {
+      throw new NotFoundException('No media found for the specified category.');
+    }
+
+    return existingCategory;
   }
 
   public async createMedia(createMediaDto: CreateMediaDto): Promise<Media> {
