@@ -18,7 +18,7 @@ describe('Media (e2e)', () => {
     title: 'Test Medie',
     comment: 'This is a test media item.',
     progress: 50,
-    availableIn: 'Netflix',
+    availableIn: ['Netflix'],
     genre: 'Action',
     status: 'PENDING',
   };
@@ -121,6 +121,25 @@ describe('Media (e2e)', () => {
       .expect(409);
   });
 
+  it('/media (POST) with availableIn must be an array of strings', async () => {
+    const response = await request(testSetup.app.getHttpServer())
+      .post('/media')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        ...testMedia,
+        categoryId: categoryId,
+        title: 'Test Media23',
+        availableIn: ['Netflix', 'HBO Max'],
+      })
+      .expect(201);
+
+    expect(response.body).toHaveProperty('id');
+    expect(response.body.categoryId).toBe(categoryId);
+    expect(response.body.availableIn).toEqual(['Netflix', 'HBO Max']);
+    expect(response.body.availableIn).toBeInstanceOf(Array);
+    expect(response.body.availableIn.length).toBe(2);
+  });
+
   it('/media/:id (PATCH)', async () => {
     const updatedTitle = 'Updated Test Media';
     const response = await request(testSetup.app.getHttpServer())
@@ -130,7 +149,7 @@ describe('Media (e2e)', () => {
         title: updatedTitle,
         comment: 'Updated comment',
         progress: 75,
-        availableIn: 'HBO Max',
+        availableIn: ['HBO Max'],
         genre: 'Drama',
         status: 'IN_PROGRESS',
         completedAt: new Date().toISOString(),

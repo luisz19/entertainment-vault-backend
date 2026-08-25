@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsDate,
   IsEnum,
   IsNotEmpty,
@@ -26,9 +27,10 @@ export class CreateMediaDto {
   @IsOptional()
   progress: number;
 
-  @IsString()
   @IsOptional()
-  availableIn: string;
+  @IsArray()
+  @IsString({ each: true })
+  availableIn: Array<string>;
 
   @IsString()
   @IsOptional()

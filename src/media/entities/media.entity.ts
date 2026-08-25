@@ -57,8 +57,9 @@ export class Media {
     type: 'varchar',
     length: 100,
     nullable: true,
+    array: true,
   })
-  availableIn: string;
+  availableIn: string[];
 
   @Column({
     type: 'varchar',

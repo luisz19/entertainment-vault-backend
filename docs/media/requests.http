@@ -38,10 +38,10 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{accessToken}}
 
 {
-    "title": "Test Media 3",
+    "title": "Test Media283333",
     "comment": "This is a test media item.",
     "progress": 50,
-    "availableIn": "Netlix",
+    "availableIn": ["Netflix", "Amazon Prime"],
     "genre": "Fiction",
     "categoryId": "{{categoryId}}"
 }
