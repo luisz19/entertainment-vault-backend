@@ -28,16 +28,23 @@ export class MediaController {
     return this.mediaService.findAll(userId);
   }
 
-  @Get('/:id')
-  public async findOne(@Param() params: findOneParams): Promise<Media | null> {
-    return this.mediaService.findOne(params.id);
-  }
-
   @Get('/category/:categoryId')
   public async findByCategory(
     @Param('categoryId') categoryId: string,
   ): Promise<Media[]> {
     return this.mediaService.findByCategory(categoryId);
+  }
+
+  @Get('historical')
+  public async findHistorical(
+    @CurrentUserId() userId: string,
+  ): Promise<Media[]> {
+    return this.mediaService.findHistorical(userId);
+  }
+
+  @Get('/:id')
+  public async findOne(@Param() params: findOneParams): Promise<Media | null> {
+    return this.mediaService.findOne(params.id);
   }
 
   @Post()

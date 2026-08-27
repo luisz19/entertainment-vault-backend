@@ -110,6 +110,18 @@ describe('Media (e2e)', () => {
     expect(response.body).toHaveProperty('id', mediaId);
   });
 
+  it('/media/historical (GET)', async () => {
+    const response = await request(testSetup.app.getHttpServer())
+      .get('/media/historical')
+      .set('Authorization', `Bearer ${authToken}`)
+      .expect(200);
+    expect(response.body).toBeInstanceOf(Array);
+    expect(response.body[0]).toHaveProperty('userId');
+    expect(response.body[0]).toHaveProperty('updatedAt');
+    expect(response.body[0]).toHaveProperty('initiatedAt');
+    expect(response.body[0]).toHaveProperty('completedAt');
+  });
+
   it('/media (POST) duplicate', async () => {
     return await request(testSetup.app.getHttpServer())
       .post('/media')

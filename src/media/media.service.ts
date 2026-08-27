@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { Media } from './entities/media.entity';
 import { CreateMediaDto } from './dto/create-media.dto';
 import { UpdateMediaDto } from './dto/update-media.dto';
+import { MediaStatus } from './model/media.model';
 
 @Injectable()
 export class MediaService {
@@ -48,6 +49,17 @@ export class MediaService {
     }
 
     return existingCategory;
+  }
+
+  public async findHistorical(userId: string): Promise<Media[]> {
+    return this.mediaRepository.find({
+      where: {
+        userId,
+      },
+      order: {
+        updatedAt: 'DESC',
+      },
+    });
   }
 
   public async createMedia(createMediaDto: CreateMediaDto): Promise<Media> {

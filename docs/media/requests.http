@@ -20,17 +20,6 @@ Content-Type: {{contentType}}
     "password": "Password123!"
 }
 
-### Create category
-# @name createCategory
-POST {{baseUrl}}/categories
-Content-Type: {{contentType}}
-Authorization: Bearer {{accessToken}}
-
-{
-    "name": "New categoria4",
-    "icon": "book"   
-}
-
 ### Create a new Media
 # @name createMedia
 POST {{baseUrl}}/media
@@ -47,20 +36,20 @@ Authorization: Bearer {{accessToken}}
 }
 
 ### Update Media by id
-PATCH {{baseUrl}}/media/{{mediaId}}
+PATCH {{baseUrl}}/media/f07e2bc8-4b2b-41b2-9d08-e919c2c53d19
 Content-Type: {{contentType}}
 Authorization: Bearer {{accessToken}}
 
 {
-    "title": "Teste - Updated",
-    "comment": "An updated comment for the classic novel.",
-    "availableIn": "Amazon Prime",
-    "genre": "Classic Fiction",
-    "categoryId": "{{categoryId}}"
+    "status": "IN_PROGRESS"
 }
 
 ### Get all users
 GET {{baseUrl}}/media
+Authorization: Bearer {{accessToken}}
+
+### Get historical media for a user
+GET {{baseUrl}}/media/historical
 Authorization: Bearer {{accessToken}}
 
 ### Get user by id
