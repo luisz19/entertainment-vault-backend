@@ -2,11 +2,13 @@ import {
   IsArray,
   IsDate,
   IsEnum,
+  IsInt,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
   IsUUID,
+  Min,
 } from 'class-validator';
 import { MediaStatus } from '../model/media.model';
 
@@ -23,9 +25,15 @@ export class CreateMediaDto {
   @IsUUID()
   categoryId: string;
 
-  @IsNumber()
+  @IsInt()
+  @Min(0)
   @IsOptional()
-  progress: number;
+  currentProgress: number;
+
+  @IsInt()
+  @Min(1)
+  @IsOptional()
+  totalProgress: number;
 
   @IsOptional()
   @IsArray()

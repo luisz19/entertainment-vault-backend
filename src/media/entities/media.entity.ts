@@ -48,10 +48,14 @@ export class Media {
   status: MediaStatus;
 
   @Column({
-    default: 0,
     nullable: true,
   })
-  progress: number;
+  currentProgress: number;
+
+  @Column({
+    nullable: true,
+  })
+  totalProgress: number;
 
   @Column({
     type: 'varchar',

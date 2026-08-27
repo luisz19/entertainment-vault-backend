@@ -8,7 +8,6 @@ import { Repository } from 'typeorm';
 import { Media } from './entities/media.entity';
 import { CreateMediaDto } from './dto/create-media.dto';
 import { UpdateMediaDto } from './dto/update-media.dto';
-import { MediaStatus } from './model/media.model';
 
 @Injectable()
 export class MediaService {
@@ -70,6 +69,16 @@ export class MediaService {
       },
     });
 
+    if (
+      createMediaDto.currentProgress !== undefined &&
+      createMediaDto.totalProgress !== undefined
+    ) {
+      this.validateProgress(
+        createMediaDto.currentProgress,
+        createMediaDto.totalProgress,
+      );
+    }
+
     if (existingMedia) {
       throw new ConflictException(
         'Media with the same title already exists for this user.',
@@ -80,11 +89,33 @@ export class MediaService {
     return await this.mediaRepository.save(media);
   }
 
+  private validateProgress(
+    currentProgress: number,
+    totalProgress: number,
+  ): void {
+    if (currentProgress > totalProgress) {
+      throw new ConflictException(
+        'Current progress cannot be greater than total progress.',
+      );
+    }
+  }
+
   public async updateMedia(
     id: string,
     updateMediaDto: UpdateMediaDto,
   ): Promise<Media> {
     const media = await this.findOneOrFail(id);
+
+    if (
+      updateMediaDto.currentProgress !== undefined &&
+      updateMediaDto.totalProgress !== undefined
+    ) {
+      this.validateProgress(
+        updateMediaDto.currentProgress,
+        updateMediaDto.totalProgress,
+      );
+    }
+
     Object.assign(media, updateMediaDto);
     return this.mediaRepository.save(media);
   }

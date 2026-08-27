@@ -17,7 +17,8 @@ describe('Media (e2e)', () => {
   const testMedia = {
     title: 'Test Medie',
     comment: 'This is a test media item.',
-    progress: 50,
+    currentProgress: 50,
+    totalProgress: 100,
     availableIn: ['Netflix'],
     genre: 'Action',
     status: 'PENDING',
@@ -133,6 +134,19 @@ describe('Media (e2e)', () => {
       .expect(409);
   });
 
+  it('/media (POST) with currentProgress greater than totalProgress', async () => {
+    return await request(testSetup.app.getHttpServer())
+      .post('/media')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        ...testMedia,
+        categoryId: categoryId,
+        currentProgress: 150,
+        totalProgress: 100,
+      })
+      .expect(409);
+  });
+
   it('/media (POST) with availableIn must be an array of strings', async () => {
     const response = await request(testSetup.app.getHttpServer())
       .post('/media')
@@ -160,7 +174,7 @@ describe('Media (e2e)', () => {
       .send({
         title: updatedTitle,
         comment: 'Updated comment',
-        progress: 75,
+        currentProgress: 75,
         availableIn: ['HBO Max'],
         genre: 'Drama',
         status: 'IN_PROGRESS',

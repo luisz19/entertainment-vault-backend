@@ -29,7 +29,8 @@ Authorization: Bearer {{accessToken}}
 {
     "title": "Test Media283333",
     "comment": "This is a test media item.",
-    "progress": 50,
+    "currentProgress": 50,
+    "totalProgress": 100,
     "availableIn": ["Netflix", "Amazon Prime"],
     "genre": "Fiction",
     "categoryId": "{{categoryId}}"
@@ -41,7 +42,8 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{accessToken}}
 
 {
-    "status": "IN_PROGRESS"
+    "currentProgress": 10,
+    "totalProgress": 100
 }
 
 ### Get all users
