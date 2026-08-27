@@ -189,6 +189,20 @@ describe('Media (e2e)', () => {
     expect(response.body.status).toBe('IN_PROGRESS');
   });
 
+  it('/media/:id (PATCH) update dates with status change', async () => {
+    const response = await request(testSetup.app.getHttpServer())
+      .patch(`/media/${mediaId}`)
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        status: 'COMPLETED',
+      })
+      .expect(200);
+
+    expect(response.body).toHaveProperty('id', mediaId);
+    expect(response.body.status).toBe('COMPLETED');
+    expect(new Date(response.body.completedAt)).toBeInstanceOf(Date);
+  });
+
   it('/media/:id (DELETE)', async () => {
     await request(testSetup.app.getHttpServer())
       .delete(`/media/${mediaId}`)

@@ -27,10 +27,11 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{accessToken}}
 
 {
-    "title": "Test Media283333",
+    "title": "Test Media28363333",
     "comment": "This is a test media item.",
     "currentProgress": 50,
     "totalProgress": 100,
+    "status": "IN_PROGRESS",
     "availableIn": ["Netflix", "Amazon Prime"],
     "genre": "Fiction",
     "categoryId": "{{categoryId}}"
@@ -44,6 +45,15 @@ Authorization: Bearer {{accessToken}}
 {
     "currentProgress": 10,
     "totalProgress": 100
+}
+
+### Update Media status by id
+PATCH {{baseUrl}}/media/f07e2bc8-4b2b-41b2-9d08-e919c2c53d19
+Content-Type: {{contentType}}
+Authorization: Bearer {{accessToken}}
+
+{
+    "status": "IN_PROGRESS"
 }
 
 ### Get all users

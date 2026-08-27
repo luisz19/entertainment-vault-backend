@@ -79,6 +79,14 @@ export class MediaService {
       );
     }
 
+    if (createMediaDto.status === 'IN_PROGRESS') {
+      createMediaDto.initiatedAt = new Date();
+    }
+
+    if (createMediaDto.status === 'COMPLETED') {
+      createMediaDto.completedAt = new Date();
+    }
+
     if (existingMedia) {
       throw new ConflictException(
         'Media with the same title already exists for this user.',
@@ -114,6 +122,14 @@ export class MediaService {
         updateMediaDto.currentProgress,
         updateMediaDto.totalProgress,
       );
+    }
+
+    if (updateMediaDto.status === 'COMPLETED') {
+      updateMediaDto.completedAt = new Date();
+    }
+
+    if (updateMediaDto.status === 'IN_PROGRESS') {
+      updateMediaDto.initiatedAt = new Date();
     }
 
     Object.assign(media, updateMediaDto);
