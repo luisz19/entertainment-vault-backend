@@ -6,7 +6,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { MediaStatus } from '../model/media.model';
+import { MediaProgressType, MediaStatus } from '../model/media.model';
 import { User } from 'src/user/entities/user.entity';
 import { Category } from 'src/category/entities/category.entity';
 
@@ -56,6 +56,13 @@ export class Media {
     nullable: true,
   })
   totalProgress: number;
+
+  @Column({
+    type: 'enum',
+    enum: MediaProgressType,
+    nullable: true,
+  })
+  progressType: MediaProgressType;
 
   @Column({
     type: 'varchar',

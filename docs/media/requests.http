@@ -27,14 +27,15 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{accessToken}}
 
 {
-    "title": "Test Media28363333",
+    "title": "Test Media283633933",
     "comment": "This is a test media item.",
     "currentProgress": 50,
     "totalProgress": 100,
     "status": "IN_PROGRESS",
     "availableIn": ["Netflix", "Amazon Prime"],
     "genre": "Fiction",
-    "categoryId": "{{categoryId}}"
+    "categoryId": "{{categoryId}}",
+    "progressType": "EPISODE"
 }
 
 ### Update Media by id

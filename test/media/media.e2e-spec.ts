@@ -19,6 +19,7 @@ describe('Media (e2e)', () => {
     comment: 'This is a test media item.',
     currentProgress: 50,
     totalProgress: 100,
+    progressType: 'EPISODE',
     availableIn: ['Netflix'],
     genre: 'Action',
     status: 'PENDING',
@@ -164,6 +165,23 @@ describe('Media (e2e)', () => {
     expect(response.body.availableIn).toEqual(['Netflix', 'HBO Max']);
     expect(response.body.availableIn).toBeInstanceOf(Array);
     expect(response.body.availableIn.length).toBe(2);
+  });
+
+  it('/media (POST) with progressType must be one of the enum values', async () => {
+    const response = await request(testSetup.app.getHttpServer())
+      .post('/media')
+      .set('Authorization', `Bearer ${authToken}`)
+      .send({
+        ...testMedia,
+        categoryId: categoryId,
+        title: 'Test Media Progress Type',
+        progressType: 'EPISODE',
+      })
+      .expect(201);
+
+    expect(response.body).toHaveProperty('id');
+    expect(response.body.categoryId).toBe(categoryId);
+    expect(response.body.progressType).toBe('EPISODE');
   });
 
   it('/media/:id (PATCH)', async () => {

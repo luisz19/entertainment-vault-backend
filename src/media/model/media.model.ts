@@ -3,3 +3,9 @@ export enum MediaStatus {
   IN_PROGRESS = 'IN_PROGRESS',
   COMPLETED = 'COMPLETED',
 }
+
+export enum MediaProgressType {
+  PAGE = 'PAGE',
+  EPISODE = 'EPISODE',
+  MINUTE = 'MINUTE',
+}

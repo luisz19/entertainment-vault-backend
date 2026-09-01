@@ -10,7 +10,7 @@ import {
   IsUUID,
   Min,
 } from 'class-validator';
-import { MediaStatus } from '../model/media.model';
+import { MediaProgressType, MediaStatus } from '../model/media.model';
 
 export class CreateMediaDto {
   @IsNotEmpty()
@@ -34,6 +34,9 @@ export class CreateMediaDto {
   @Min(1)
   @IsOptional()
   totalProgress: number;
+
+  @IsEnum(MediaProgressType)
+  progressType: MediaProgressType;
 
   @IsOptional()
   @IsArray()
